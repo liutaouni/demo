@@ -188,12 +188,12 @@ namespace Log4Qt
 	    if (instance()->mHandleQtMessages)
 	    {
 	        static_logger()->trace("Activate Qt message handling");
-	        instance()->mOldQtMsgHandler = qInstallMsgHandler(qtMessageHandler);
+            instance()->mOldQtMsgHandler = qInstallMessageHandler(qtMessageHandler);
 	    }
 	    else
 	    {
 	        static_logger()->trace("Deactivate Qt message handling");
-	        qInstallMsgHandler(instance()->mOldQtMsgHandler);
+            qInstallMessageHandler(instance()->mOldQtMsgHandler);
 	    }
 	}
 	
@@ -364,7 +364,7 @@ namespace Log4Qt
     }
     
     
-	void LogManager::qtMessageHandler(QtMsgType type, const char *pMessage)
+    void LogManager::qtMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &pMessage)
 	{
 	    Level level;
 	    switch (type)
@@ -396,7 +396,7 @@ namespace Log4Qt
 	        // get the current report mode
 	        int reportMode = _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_WNDW);
 	        _CrtSetReportMode(_CRT_ERROR, reportMode);
-	        int ret = _CrtDbgReport(_CRT_ERROR, __FILE__, __LINE__, QT_VERSION_STR, pMessage);
+            int ret = _CrtDbgReport(_CRT_ERROR, __FILE__, __LINE__, QT_VERSION_STR, pMessage.toUtf8().data());
 	        if (ret == 0  && reportMode & _CRTDBG_MODE_WNDW)
 	            return; // ignore
 	        else if (ret == 1)

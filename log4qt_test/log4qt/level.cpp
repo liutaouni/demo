@@ -34,7 +34,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
 #include "log4qt/logger.h"
-
+#include <QDataStream>
 
 namespace Log4Qt
 {

@@ -255,15 +255,14 @@ namespace Log4Qt
 		void doConfigureLogLogger();
 		void doStartup();
 		void welcome();
-	    static void qtMessageHandler(QtMsgType type,
-	                                 const char *pMessage);
+        static void qtMessageHandler(QtMsgType type, const QMessageLogContext &, const QString &pMessage);
 	
 	private:
 	    mutable QMutex mObjectGuard;
 	    LoggerRepository *mpLoggerRepository;
 	    Logger *mpNullLogger;
 	    bool mHandleQtMessages;
-	    QtMsgHandler mOldQtMsgHandler;
+        QtMessageHandler mOldQtMsgHandler;
 	    static LogManager *mspInstance;
 	};
 	

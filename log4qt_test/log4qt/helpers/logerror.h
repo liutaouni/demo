@@ -134,11 +134,6 @@ namespace Log4Qt
 	    {
 	    	/*! LATIN-1 */
 	        LATIN1,
-	    	/*! 
-	    	 * The encoding specified by QTextCodec::codecForTr()
-	    	 * (Latin-1 if none has been set). 
-	    	 */
-	        CODECFORTR,
 	    	/*! UTF-8 */
 	        UNICODEUTF8,
 	    };
