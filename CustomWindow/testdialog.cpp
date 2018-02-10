@@ -5,7 +5,7 @@ TestDialog::TestDialog(QWidget *parent) :
     SDialog(parent),
     ui(new Ui::TestDialog)
 {
-    ui->setupUi(this);
+    ui->setupUi(SDialog::getContentWidget());
 }
 
 TestDialog::~TestDialog()

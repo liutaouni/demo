@@ -5,7 +5,7 @@ TestWindow::TestWindow(QWidget *parent) :
     SWindow(parent),
     ui(new Ui::TestWindow)
 {
-    ui->setupUi(this);
+    ui->setupUi(SWindow::getContentWidget());
 }
 
 TestWindow::~TestWindow()
