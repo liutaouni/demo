@@ -68,17 +68,6 @@ namespace Log4Qt
 	{
 	    setDatePattern(DAILY_ROLLOVER);
 	}
-	
-	
-	DailyRollingFileAppender::DailyRollingFileAppender(Layout *pLayout, 
-	                                                   const QString &rFileName, 
-	                                                   const QString &rDatePattern, 
-	                                                   QObject *pParent) :
-	    FileAppender(pLayout, rFileName, pParent),
-	    mDatePattern()
-	{
-	    setDatePattern(rDatePattern);
-	}
 	              	   
 	
 	DailyRollingFileAppender::~DailyRollingFileAppender()
@@ -124,6 +113,10 @@ namespace Log4Qt
 	    if (!mActiveDatePattern.isEmpty())
 	    {
 	        computeRollOverTime();
+
+            QString target_file_name = mFileNamePrefix + mRollStartSuffix;
+            FileAppender::setFile(target_file_name);
+
 	        FileAppender::activateOptions();
 	    }
 	}
@@ -300,10 +293,10 @@ namespace Log4Qt
 	            mRollOverTime = QDateTime::fromTime_t(0);
 	    }
 	    
-	    mRollOverSuffix = static_cast<DateTime>(start).toString(mActiveDatePattern);
-	    Q_ASSERT_X(static_cast<DateTime>(now).toString(mActiveDatePattern) == mRollOverSuffix, 
+        mRollStartSuffix = static_cast<DateTime>(start).toString(mActiveDatePattern);
+        Q_ASSERT_X(static_cast<DateTime>(now).toString(mActiveDatePattern) == mRollStartSuffix,
 	               "DailyRollingFileAppender::computeRollOverTime()", "File name changes within interval");
-	    Q_ASSERT_X(mRollOverSuffix != static_cast<DateTime>(mRollOverTime).toString(mActiveDatePattern),
+        Q_ASSERT_X(mRollStartSuffix != static_cast<DateTime>(mRollOverTime).toString(mActiveDatePattern),
 	               "DailyRollingFileAppender::computeRollOverTime()", "File name does not change with rollover");
 	    
 	    logger()->trace("Computing roll over time from %1: The interval start time is %2. The roll over time is %3",
@@ -325,20 +318,16 @@ namespace Log4Qt
 	    // Q_ASSERT_X(, "DailyRollingFileAppender::rollOver()", "Lock must be held by caller")
 	    Q_ASSERT_X(!mActiveDatePattern.isEmpty(), "DailyRollingFileAppender::rollOver()", "No active date pattern");
 	
-	    QString roll_over_suffix = mRollOverSuffix;
+        QString roll_start_suffix = mRollStartSuffix;
 	    computeRollOverTime();
-	    if (roll_over_suffix == mRollOverSuffix)
+        if (roll_start_suffix == mRollStartSuffix)
 	        return;
 	
 	    closeFile();
 	
-	    QString target_file_name = file() + roll_over_suffix;
-	    QFile f(target_file_name);
-	    if (f.exists() && !removeFile(f))
-	        return;
-	    f.setFileName(file());
-	    if (!renameFile(f, target_file_name))
-            return;
+        QString target_file_name = mFileNamePrefix + mRollStartSuffix;
+        setFile(target_file_name);
+
 	    openFile();
 	}
 	

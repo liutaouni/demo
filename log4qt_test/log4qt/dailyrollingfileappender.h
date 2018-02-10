@@ -63,6 +63,8 @@ namespace Log4Qt
 	     * \sa datePattern(), setDatePattern()
 	     */
 	    Q_PROPERTY(QString datePattern READ datePattern WRITE setDatePattern)
+
+        Q_PROPERTY(QString fileNamePrefix READ fileNamePrefix WRITE setFileNamePrefix)
 	 
 	public:
 	    /*!
@@ -88,16 +90,15 @@ namespace Log4Qt
 	    Q_ENUMS(DatePattern)
 	
 	    DailyRollingFileAppender(QObject *pParent = 0);
-	    DailyRollingFileAppender(Layout *pLayout, 
-	                             const QString &rFileName, 
-	                             const QString &rDatePattern, 
-	                             QObject *pParent = 0);
 	    virtual ~DailyRollingFileAppender();
+
 	private:
 	    DailyRollingFileAppender(const DailyRollingFileAppender &rOther); // Not implemented
 	    DailyRollingFileAppender &operator=(const DailyRollingFileAppender &rOther); // Not implemented
 	        
 	public:
+
+
 	    QString datePattern() const;
 	
 	    /*!
@@ -108,6 +109,10 @@ namespace Log4Qt
 	    
 	    void setDatePattern(const QString &rDatePattern);
 	
+        QString fileNamePrefix() const;
+
+        void setFileNamePrefix(const QString &rFileNamePrefix);
+
 	    virtual void activateOptions();
 	    
 	protected:
@@ -161,11 +166,12 @@ namespace Log4Qt
 	    void rollOver();
 	    
 	private:
+        QString mFileNamePrefix;
 	    QString mDatePattern;
 	    DatePattern mFrequency;
 	    QString mActiveDatePattern;
 	    QDateTime mRollOverTime;
-	    QString mRollOverSuffix;
+        QString mRollStartSuffix;
 	};
 	
 	
@@ -185,6 +191,14 @@ namespace Log4Qt
 	inline void DailyRollingFileAppender::setDatePattern(const QString &rDatePattern)
 	{   QMutexLocker locker(&mObjectGuard);
 	    mDatePattern = rDatePattern;    }
+
+    inline QString DailyRollingFileAppender::fileNamePrefix() const
+    {   QMutexLocker locker(&mObjectGuard);
+        return mFileNamePrefix;   }
+
+    inline void DailyRollingFileAppender::setFileNamePrefix(const QString &rFileNamePrefix)
+    {   QMutexLocker locker(&mObjectGuard);
+        mFileNamePrefix = rFileNamePrefix;    }
 	
 	
 } // namespace Log4Qt
