@@ -21,10 +21,18 @@ public:
     void showInactive();
 
 protected:
+    bool eventFilter(QObject *watched, QEvent *event);
     void paintEvent(QPaintEvent *e);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 private:
     Ui::ComWindow *ui;
+
+    bool mIsMouseLeftBtnPressed = false;
+
+    void updateCorsurStyleForDragBorder(const QPoint &pos);
 };
 
 #endif // COMWINDOW_H
