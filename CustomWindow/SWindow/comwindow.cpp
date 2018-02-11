@@ -3,14 +3,16 @@
 
 #include <QPainter>
 
+#include <QDebug>
+
 ComWindow::ComWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ComWindow)
 {
     ui->setupUi(this);
 
-    setStyleSheet("QWidget#ComWindow{border:1px solid gray; border-radius:5px; background:darkGreen;}");
-    ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid gray; background:white;}");
+    setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
+    ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
 }
 
 ComWindow::~ComWindow()
@@ -30,4 +32,18 @@ void ComWindow::paintEvent(QPaintEvent *e)
 QWidget *ComWindow::getContentWidget()
 {
     return ui->contentWidget;
+}
+
+void ComWindow::showActive()
+{
+    setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
+    ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
+    this->repaint();
+}
+
+void ComWindow::showInactive()
+{
+    setStyleSheet("QWidget#ComWindow{border:1px solid #D3D3D3; background:#EBEBEB;}");
+    ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #DADADA; background:#FFFFFF;}");
+    this->repaint();
 }

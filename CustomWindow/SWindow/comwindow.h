@@ -17,6 +17,9 @@ public:
 
     QWidget *getContentWidget();
 
+    void showActive();
+    void showInactive();
+
 protected:
     void paintEvent(QPaintEvent *e);
 
