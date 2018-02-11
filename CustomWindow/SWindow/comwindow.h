@@ -44,6 +44,8 @@ protected:
 private:
     Ui::ComWindow *ui;
 
+    const int mBorderWidth = 7;
+
     bool mIsLeftBtnPressed = false;
     QPoint mLeftBtnPressedPos;
     QRect mWinGeometry;

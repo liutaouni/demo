@@ -12,12 +12,15 @@ ComWindow::ComWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->winLayout->setContentsMargins(mBorderWidth, 1, mBorderWidth, mBorderWidth);
+
     this->setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
     ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
 
     this->setMouseTracking(true);
+    ui->titleWidget->setMouseTracking(true);
+
     ui->contentWidget->installEventFilter(this);
-    ui->titleWidget->installEventFilter(this);
 }
 
 ComWindow::~ComWindow()
@@ -28,14 +31,6 @@ ComWindow::~ComWindow()
 bool ComWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if(ui->contentWidget == watched)
-    {
-        if(event->type() == QEvent::Enter)
-        {
-            this->setCursor(Qt::ArrowCursor);
-            mDragRegion = EBorderNone;
-        }
-    }
-    else if(ui->titleWidget == watched)
     {
         if(event->type() == QEvent::Enter)
         {
@@ -116,18 +111,14 @@ void ComWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
 {
-    int borderWidthLeft, borderWidthTop, borderWidthRight, borderWidthBottom;
-    ui->winLayout->getContentsMargins(&borderWidthLeft, &borderWidthTop,
-                                      &borderWidthRight, &borderWidthBottom);
-
-    if(pos.x() < borderWidthLeft)
+    if(pos.x() < mBorderWidth)
     {
-        if(pos.y() < borderWidthTop)
+        if(pos.y() < mBorderWidth)
         {
             this->setCursor(Qt::SizeFDiagCursor);
             mDragRegion = EBorderTopLeft;
         }
-        else if(pos.y() > this->height() - borderWidthBottom)
+        else if(pos.y() > this->height() - mBorderWidth)
         {
             this->setCursor(Qt::SizeBDiagCursor);
             mDragRegion = EBorderBottomLeft;
@@ -138,14 +129,14 @@ void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
             mDragRegion = EBorderLeft;
         }
     }
-    else if(pos.x() > this->width() - borderWidthRight)
+    else if(pos.x() > this->width() - mBorderWidth)
     {
-        if(pos.y() < borderWidthTop)
+        if(pos.y() < mBorderWidth)
         {
             this->setCursor(Qt::SizeBDiagCursor);
             mDragRegion = EBorderTopRight;
         }
-        else if(pos.y() > this->height() - borderWidthBottom)
+        else if(pos.y() > this->height() - mBorderWidth)
         {
             this->setCursor(Qt::SizeFDiagCursor);
             mDragRegion = EBorderBottomRight;
@@ -158,15 +149,20 @@ void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
     }
     else
     {
-        if(pos.y() < borderWidthTop)
+        if(pos.y() < mBorderWidth)
         {
             this->setCursor(Qt::SizeVerCursor);
             mDragRegion = EBorderTop;
         }
-        else if(pos.y() > this->height() - borderWidthBottom)
+        else if(pos.y() > this->height() - mBorderWidth)
         {
             this->setCursor(Qt::SizeVerCursor);
             mDragRegion = EBorderBottom;
+        }
+        else
+        {
+            this->setCursor(Qt::ArrowCursor);
+            mDragRegion = EBorderNone;
         }
     }
 }
