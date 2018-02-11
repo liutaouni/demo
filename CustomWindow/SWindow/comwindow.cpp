@@ -32,6 +32,7 @@ bool ComWindow::eventFilter(QObject *watched, QEvent *event)
         if(event->type() == QEvent::Enter)
         {
             this->setCursor(Qt::ArrowCursor);
+            mDragRegion = EBorderNone;
         }
     }
     else if(ui->titleWidget == watched)
@@ -39,6 +40,7 @@ bool ComWindow::eventFilter(QObject *watched, QEvent *event)
         if(event->type() == QEvent::Enter)
         {
             this->setCursor(Qt::ArrowCursor);
+            mDragRegion = EBorderNone;
         }
     }
 
@@ -77,7 +79,9 @@ void ComWindow::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        mIsMouseLeftBtnPressed = true;
+        mIsLeftBtnPressed = true;
+        mLeftBtnPressedPos = this->mapToGlobal(event->pos());
+        mWinGeometry = this->window()->geometry();
     }
 
     QWidget::mousePressEvent(event);
@@ -85,9 +89,12 @@ void ComWindow::mousePressEvent(QMouseEvent *event)
 
 void ComWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    if(mIsMouseLeftBtnPressed)
+    if(mIsLeftBtnPressed)
     {
-
+        if(mDragRegion != EBorderNone)
+        {
+            updateGeometryByDragBorder(mapToGlobal(event->pos()));
+        }
     }
     else
     {
@@ -101,7 +108,7 @@ void ComWindow::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
-        mIsMouseLeftBtnPressed = false;
+        mIsLeftBtnPressed = false;
     }
 
     QWidget::mouseReleaseEvent(event);
@@ -118,14 +125,17 @@ void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
         if(pos.y() < borderWidthTop)
         {
             this->setCursor(Qt::SizeFDiagCursor);
+            mDragRegion = EBorderTopLeft;
         }
         else if(pos.y() > this->height() - borderWidthBottom)
         {
             this->setCursor(Qt::SizeBDiagCursor);
+            mDragRegion = EBorderBottomLeft;
         }
         else
         {
             this->setCursor(Qt::SizeHorCursor);
+            mDragRegion = EBorderLeft;
         }
     }
     else if(pos.x() > this->width() - borderWidthRight)
@@ -133,22 +143,96 @@ void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
         if(pos.y() < borderWidthTop)
         {
             this->setCursor(Qt::SizeBDiagCursor);
+            mDragRegion = EBorderTopRight;
         }
         else if(pos.y() > this->height() - borderWidthBottom)
         {
             this->setCursor(Qt::SizeFDiagCursor);
+            mDragRegion = EBorderBottomRight;
         }
         else
         {
             this->setCursor(Qt::SizeHorCursor);
+            mDragRegion = EBorderRight;
         }
     }
     else
     {
-        if(pos.y() < borderWidthTop
-                || pos.y() > this->height() - borderWidthBottom)
+        if(pos.y() < borderWidthTop)
         {
             this->setCursor(Qt::SizeVerCursor);
+            mDragRegion = EBorderTop;
+        }
+        else if(pos.y() > this->height() - borderWidthBottom)
+        {
+            this->setCursor(Qt::SizeVerCursor);
+            mDragRegion = EBorderBottom;
         }
     }
+}
+
+void ComWindow::updateGeometryByDragBorder(const QPoint &pos)
+{
+    int xOffset = pos.x() - mLeftBtnPressedPos.x();
+    int yOffset = pos.y() - mLeftBtnPressedPos.y();
+
+    QRect winRect = mWinGeometry;
+
+    switch(mDragRegion)
+    {
+    case EBorderLeft:
+        winRect.setLeft(winRect.left() + xOffset);
+        if(winRect.width() < this->window()->minimumWidth())
+        {
+            winRect.setLeft(winRect.right() - this->window()->minimumWidth() + 1);
+        }
+        break;
+    case EBorderTop:
+        winRect.setTop(winRect.top() + yOffset);
+        if(winRect.height() < this->window()->minimumHeight())
+        {
+            winRect.setTop(winRect.bottom() - this->window()->minimumHeight() + 1);
+        }
+        break;
+    case EBorderRight:
+        winRect.setRight(winRect.right() + xOffset);
+        break;
+    case EBorderBottom:
+        winRect.setBottom(winRect.bottom() + yOffset);
+        break;
+    case EBorderTopLeft:
+        winRect.setTop(winRect.top() + yOffset);
+        winRect.setLeft(winRect.left() + xOffset);
+        if(winRect.width() < this->window()->minimumWidth())
+        {
+            winRect.setLeft(winRect.right() - this->window()->minimumWidth() + 1);
+        }
+        if(winRect.height() < this->window()->minimumHeight())
+        {
+            winRect.setTop(winRect.bottom() - this->window()->minimumHeight() + 1);
+        }
+        break;
+    case EBorderTopRight:
+        winRect.setTop(winRect.top() + yOffset);
+        winRect.setRight(winRect.right() + xOffset);
+        if(winRect.height() < this->window()->minimumHeight())
+        {
+            winRect.setTop(winRect.bottom() - this->window()->minimumHeight() + 1);
+        }
+        break;
+    case EBorderBottomLeft:
+        winRect.setBottom(winRect.bottom() + yOffset);
+        winRect.setLeft(winRect.left() + xOffset);
+        if(winRect.width() < this->window()->minimumWidth())
+        {
+            winRect.setLeft(winRect.right() - this->window()->minimumWidth() + 1);
+        }
+        break;
+    case EBorderBottomRight:
+        winRect.setBottom(winRect.bottom() + yOffset);
+        winRect.setRight(winRect.right() + xOffset);
+        break;
+    }
+
+    this->window()->setGeometry(winRect);
 }

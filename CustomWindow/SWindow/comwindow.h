@@ -11,6 +11,20 @@ class ComWindow : public QWidget
 {
     Q_OBJECT
 
+private:
+    enum EBorderDragRegion
+    {
+        EBorderLeft,
+        EBorderTop,
+        EBorderRight,
+        EBorderBottom,
+        EBorderTopLeft,
+        EBorderTopRight,
+        EBorderBottomLeft,
+        EBorderBottomRight,
+        EBorderNone
+    };
+
 public:
     explicit ComWindow(QWidget *parent = 0);
     ~ComWindow();
@@ -30,9 +44,14 @@ protected:
 private:
     Ui::ComWindow *ui;
 
-    bool mIsMouseLeftBtnPressed = false;
+    bool mIsLeftBtnPressed = false;
+    QPoint mLeftBtnPressedPos;
+    QRect mWinGeometry;
+
+    EBorderDragRegion mDragRegion = EBorderNone;
 
     void updateCorsurStyleForDragBorder(const QPoint &pos);
+    void updateGeometryByDragBorder(const QPoint &pos);
 };
 
 #endif // COMWINDOW_H
