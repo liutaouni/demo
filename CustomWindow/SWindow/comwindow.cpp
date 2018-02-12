@@ -1,3 +1,7 @@
+﻿#ifdef _MSC_VER
+    #pragma execution_character_set("utf-8")
+#endif
+
 #include "comwindow.h"
 #include "ui_comwindow.h"
 
@@ -163,6 +167,13 @@ void ComWindow::mouseReleaseEvent(QMouseEvent *event)
     QWidget::mouseReleaseEvent(event);
 }
 
+void ComWindow::resizeEvent(QResizeEvent *event)
+{
+    updateWindowTitle(mWinTitle);
+
+    QWidget::resizeEvent(event);
+}
+
 void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
 {
     if(pos.x() < mBorderWidth)
@@ -306,12 +317,26 @@ void ComWindow::on_closeBtn_clicked()
     this->window()->close();
 }
 
-void ComWindow::setWindowTitle(const QString &title)
+void ComWindow::updateWindowTitle(const QString &title)
 {
-    ui->titleLabel->setText(title);
+    mWinTitle = title;
+    QString disTitle = mWinTitle;
+
+    QFontMetrics fm(ui->titleLabel->font());
+    if(fm.width(disTitle) > ui->titleLabel->width()){
+        ui->titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        disTitle = fm.elidedText(disTitle, Qt::ElideRight, qMax(ui->titleLabel->width(), ui->titleLabel->minimumWidth()*2));
+        disTitle.replace("…", "...");
+    }else{
+        ui->titleLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    }
+
+    ui->titleLabel->setText(disTitle);
 }
 
-void ComWindow::setWindowIcon(const QIcon &icon)
+void ComWindow::updateWindowIcon(const QIcon &icon)
 {
     ui->iconBtn->setIcon(icon);
 }
+
+

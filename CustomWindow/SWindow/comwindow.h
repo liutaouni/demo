@@ -32,8 +32,8 @@ public:
     QWidget *getContentWidget();
 
     void updateWindowStyle(bool isActive);
-    void setWindowTitle(const QString &title);
-    void setWindowIcon(const QIcon &icon);
+    void updateWindowTitle(const QString &title);
+    void updateWindowIcon(const QIcon &icon);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -41,6 +41,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 private slots:
     void on_minBtn_clicked();
@@ -61,6 +62,8 @@ private:
     QRect mWinGeometry;
 
     EBorderDragRegion mDragRegion = EBorderNone;
+
+    QString mWinTitle;
 
     void updateCorsurStyleForDragBorder(const QPoint &pos);
     void updateGeometryByDragBorder(const QPoint &pos);

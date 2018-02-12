@@ -59,11 +59,11 @@ void SWindow::changeEvent(QEvent *event)
     }
     else if(event->type() == QEvent::WindowTitleChange)
     {
-        mComWin->setWindowTitle(this->windowTitle());
+        mComWin->updateWindowTitle(this->windowTitle());
     }
     else if(event->type() == QEvent::WindowIconChange)
     {
-        mComWin->setWindowIcon(this->windowIcon());
+        mComWin->updateWindowIcon(this->windowIcon());
     }
 
     QWidget::changeEvent(event);
