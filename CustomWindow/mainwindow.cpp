@@ -19,11 +19,11 @@ MainWindow::~MainWindow()
 void MainWindow::on_testWindowBtn_clicked()
 {
     TestWindow *win = new TestWindow();
-    win->show();
+    win->showMaximized();
 }
 
 void MainWindow::on_testDialogBtn_clicked()
 {
     TestDialog *win = new TestDialog();
-    win->show();
+    win->showMaximized();
 }

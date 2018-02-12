@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>icon/close_active.png</file>
+        <file>icon/close_deactive.png</file>
+        <file>icon/close_hover.png</file>
+        <file>icon/max.png</file>
+        <file>icon/max_hover.png</file>
+        <file>icon/min.png</file>
+        <file>icon/min_hover.png</file>
+        <file>icon/restore.png</file>
+        <file>icon/restore_hover.png</file>
+    </qresource>
+    <qresource prefix="/qss"/>
+</RCC>

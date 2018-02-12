@@ -12,14 +12,16 @@ ComWindow::ComWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->winLayout->setContentsMargins(mBorderWidth, 1, mBorderWidth, mBorderWidth);
-
-    this->setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
-    ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
+    updateWindowStyle(false);
+    ui->minBtn->setStyleSheet("QPushButton#minBtn{border-image:url(:/icon/icon/min.png)}"
+                              "QPushButton#minBtn:hover{border-image:url(:/icon/icon/min_hover.png)}");
 
     this->setMouseTracking(true);
+    ui->titleLabel->setMouseTracking(true);
     ui->titleWidget->setMouseTracking(true);
 
+    ui->iconLabel->installEventFilter(this);
+    ui->btnsWidget->installEventFilter(this);
     ui->contentWidget->installEventFilter(this);
 }
 
@@ -30,7 +32,9 @@ ComWindow::~ComWindow()
 
 bool ComWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    if(ui->contentWidget == watched)
+    if((ui->contentWidget == watched && event->type() == QEvent::Enter)
+            || (ui->iconLabel == watched && event->type() == QEvent::Enter)
+            || (ui->btnsWidget == watched && event->type() == QEvent::Enter))
     {
         if(event->type() == QEvent::Enter)
         {
@@ -56,17 +60,63 @@ QWidget *ComWindow::getContentWidget()
     return ui->contentWidget;
 }
 
-void ComWindow::showActive()
+void ComWindow::updateWindowStyle(bool isActive)
 {
-    this->setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
-    ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
-    this->repaint();
-}
+    if(this->window()->windowState() & Qt::WindowMaximized)
+    {
+        if(isActive)
+        {
+            ui->winLayout->setContentsMargins(0, 0, 0, 0);
+            ui->titleWidget->setFixedHeight(mMaxTitleHeight);
+            ui->titleLayout->setContentsMargins(2, 0, 2, 0);
+            this->setStyleSheet("QWidget#ComWindow{border:none; background:#6BADF6;}");
+            ui->contentWidget->setStyleSheet("QWidget#contentWidget{border-top:1px solid #5B93D1; background:#FFFFFF;}");
+        }
+        else
+        {
+            ui->winLayout->setContentsMargins(0, 0, 0, 0);
+            ui->titleWidget->setFixedHeight(mMaxTitleHeight);
+            ui->titleLayout->setContentsMargins(2, 0, 2, 0);
+            this->setStyleSheet("QWidget#ComWindow{border:none; background:#EBEBEB;}");
+            ui->contentWidget->setStyleSheet("QWidget#contentWidget{border-top:1px solid #DADADA; background:#FFFFFF;}");
+        }
+    }
+    else
+    {
+        if(isActive)
+        {
+            ui->winLayout->setContentsMargins(mBorderWidth, 1, mBorderWidth, mBorderWidth);
+            ui->titleWidget->setFixedHeight(mNorTitleHeight);
+            ui->titleLayout->setContentsMargins(0, 0, 0, 0);
+            this->setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
+            ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
+        }
+        else
+        {
+            ui->winLayout->setContentsMargins(mBorderWidth, 1, mBorderWidth, mBorderWidth);
+            ui->titleWidget->setFixedHeight(mNorTitleHeight);
+            ui->titleLayout->setContentsMargins(0, 0, 0, 0);
+            this->setStyleSheet("QWidget#ComWindow{border:1px solid #D3D3D3; background:#EBEBEB;}");
+            ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #DADADA; background:#FFFFFF;}");
+        }
+    }
 
-void ComWindow::showInactive()
-{
-    this->setStyleSheet("QWidget#ComWindow{border:1px solid #D3D3D3; background:#EBEBEB;}");
-    ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #DADADA; background:#FFFFFF;}");
+    if(isActive){
+        ui->closeBtn->setStyleSheet("QPushButton#closeBtn{border-image:url(:/icon/icon/close_active.png)}"
+                                    "QPushButton#closeBtn:hover{border-image:url(:/icon/icon/close_hover.png)}");
+    }else{
+        ui->closeBtn->setStyleSheet("QPushButton#closeBtn{border-image:url(:/icon/icon/close_deactive.png)}"
+                                    "QPushButton#closeBtn:hover{border-image:url(:/icon/icon/close_hover.png)}");
+    }
+
+    if(this->window()->windowState() & Qt::WindowMaximized){
+        ui->maxBtn->setStyleSheet("QPushButton#maxBtn{border-image:url(:/icon/icon/restore.png)}"
+                                  "QPushButton#maxBtn:hover{border-image:url(:/icon/icon/restore_hover.png)}");
+    }else{
+        ui->maxBtn->setStyleSheet("QPushButton#maxBtn{border-image:url(:/icon/icon/max.png)}"
+                                  "QPushButton#maxBtn:hover{border-image:url(:/icon/icon/max_hover.png)}");
+    }
+
     this->repaint();
 }
 
@@ -93,7 +143,11 @@ void ComWindow::mouseMoveEvent(QMouseEvent *event)
     }
     else
     {
-        updateCorsurStyleForDragBorder(event->pos());
+        if(this->window()->minimumSize() != this->window()->maximumSize()
+                && !this->window()->isMaximized())
+        {
+            updateCorsurStyleForDragBorder(event->pos());
+        }
     }
 
     QWidget::mouseMoveEvent(event);
@@ -231,4 +285,23 @@ void ComWindow::updateGeometryByDragBorder(const QPoint &pos)
     }
 
     this->window()->setGeometry(winRect);
+}
+
+void ComWindow::on_minBtn_clicked()
+{
+    this->window()->showMinimized();
+}
+
+void ComWindow::on_maxBtn_clicked()
+{
+    if(this->window()->windowState() & Qt::WindowMaximized){
+        this->window()->showNormal();
+    }else{
+        this->window()->showMaximized();
+    }
+}
+
+void ComWindow::on_closeBtn_clicked()
+{
+    this->window()->close();
 }

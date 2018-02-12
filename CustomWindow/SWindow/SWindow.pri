@@ -10,3 +10,6 @@ SOURCES += \
 
 FORMS += \
     $$PWD/comwindow.ui
+
+RESOURCES += \
+    $$PWD/resource/resource.qrc

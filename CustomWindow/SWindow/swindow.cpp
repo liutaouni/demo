@@ -1,6 +1,7 @@
 #include "swindow.h"
 
 #include <QVBoxLayout>
+#include <QEvent>
 
 #include <QDebug>
 
@@ -36,14 +37,24 @@ bool SWindow::nativeEvent(const QByteArray &eventType, void *message, long *resu
         {
             if(msg->wParam == WA_INACTIVE)
             {
-                mComWin->showInactive();
+                mComWin->updateWindowStyle(false);
             }
             else
             {
-                mComWin->showActive();
+                mComWin->updateWindowStyle(true);
             }
         }
     }
 
     return QWidget::nativeEvent(eventType,message,result);
+}
+
+void SWindow::changeEvent(QEvent *event)
+{
+    if(event->type() == QEvent::WindowStateChange)
+    {
+        mComWin->updateWindowStyle(this->isActiveWindow());
+    }
+
+    QWidget::changeEvent(event);
 }

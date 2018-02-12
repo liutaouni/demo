@@ -31,8 +31,7 @@ public:
 
     QWidget *getContentWidget();
 
-    void showActive();
-    void showInactive();
+    void updateWindowStyle(bool isActive);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -41,10 +40,19 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 
+private slots:
+    void on_minBtn_clicked();
+
+    void on_maxBtn_clicked();
+
+    void on_closeBtn_clicked();
+
 private:
     Ui::ComWindow *ui;
 
     const int mBorderWidth = 7;
+    const int mMaxTitleHeight = 23;
+    const int mNorTitleHeight = 29;
 
     bool mIsLeftBtnPressed = false;
     QPoint mLeftBtnPressedPos;
