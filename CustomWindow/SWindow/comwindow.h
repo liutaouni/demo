@@ -32,6 +32,8 @@ public:
     QWidget *getContentWidget();
 
     void updateWindowStyle(bool isActive);
+    void setWindowTitle(const QString &title);
+    void setWindowIcon(const QIcon &icon);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);

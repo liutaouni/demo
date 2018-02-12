@@ -20,7 +20,7 @@ ComWindow::ComWindow(QWidget *parent) :
     ui->titleLabel->setMouseTracking(true);
     ui->titleWidget->setMouseTracking(true);
 
-    ui->iconLabel->installEventFilter(this);
+    ui->iconBtn->installEventFilter(this);
     ui->btnsWidget->installEventFilter(this);
     ui->contentWidget->installEventFilter(this);
 }
@@ -33,7 +33,7 @@ ComWindow::~ComWindow()
 bool ComWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if((ui->contentWidget == watched && event->type() == QEvent::Enter)
-            || (ui->iconLabel == watched && event->type() == QEvent::Enter)
+            || (ui->iconBtn == watched && event->type() == QEvent::Enter)
             || (ui->btnsWidget == watched && event->type() == QEvent::Enter))
     {
         if(event->type() == QEvent::Enter)
@@ -304,4 +304,14 @@ void ComWindow::on_maxBtn_clicked()
 void ComWindow::on_closeBtn_clicked()
 {
     this->window()->close();
+}
+
+void ComWindow::setWindowTitle(const QString &title)
+{
+    ui->titleLabel->setText(title);
+}
+
+void ComWindow::setWindowIcon(const QIcon &icon)
+{
+    ui->iconBtn->setIcon(icon);
 }

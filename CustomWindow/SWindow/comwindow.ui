@@ -60,7 +60,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="iconLabel">
+       <widget class="QPushButton" name="iconBtn">
         <property name="minimumSize">
          <size>
           <width>20</width>
@@ -74,14 +74,17 @@
          </size>
         </property>
         <property name="text">
-         <string>%</string>
+         <string>Q</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="titleLabel">
         <property name="text">
-         <string>window title</string>
+         <string/>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
