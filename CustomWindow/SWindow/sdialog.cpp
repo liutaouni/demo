@@ -10,7 +10,7 @@
 SDialog::SDialog(QWidget *parent) : QDialog(parent)
 {
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground);
+    //setAttribute(Qt::WA_TranslucentBackground);
 
     mComWin = new ComWindow();
 

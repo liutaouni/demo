@@ -10,7 +10,7 @@
 SWindow::SWindow(QWidget *parent) : QWidget(parent)
 {
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground);
+    //setAttribute(Qt::WA_TranslucentBackground);
 
     mComWin = new ComWindow();
 
