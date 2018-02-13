@@ -9,6 +9,7 @@
         <file>icon/min_hover.png</file>
         <file>icon/restore.png</file>
         <file>icon/restore_hover.png</file>
+        <file>icon/window_icon.png</file>
     </qresource>
     <qresource prefix="/qss"/>
 </RCC>

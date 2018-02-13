@@ -19,6 +19,7 @@ public slots:
 
 protected:
     bool nativeEvent(const QByteArray &eventType, void *message, long *result);
+    bool event(QEvent *event);
     void changeEvent(QEvent *event);
 
 private:

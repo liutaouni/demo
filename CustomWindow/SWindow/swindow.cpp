@@ -22,6 +22,7 @@ SWindow::SWindow(QWidget *parent) : QWidget(parent)
     this->setLayout(layout);
 
     this->setWindowTitle(tr("Form"));
+    this->setWindowIcon(QIcon(":/icon/icon/window_icon.png"));
 }
 
 QWidget *SWindow::getContentWidget()
@@ -51,6 +52,16 @@ bool SWindow::nativeEvent(const QByteArray &eventType, void *message, long *resu
     return QWidget::nativeEvent(eventType,message,result);
 }
 
+bool SWindow::event(QEvent *event)
+{
+    if(event->type() == QEvent::WindowIconChange)
+    {
+        mComWin->updateWindowIcon(this->windowIcon());
+    }
+
+    return QWidget::event(event);
+}
+
 void SWindow::changeEvent(QEvent *event)
 {
     if(event->type() == QEvent::WindowStateChange)
@@ -60,10 +71,6 @@ void SWindow::changeEvent(QEvent *event)
     else if(event->type() == QEvent::WindowTitleChange)
     {
         mComWin->updateWindowTitle(this->windowTitle());
-    }
-    else if(event->type() == QEvent::WindowIconChange)
-    {
-        mComWin->updateWindowIcon(this->windowIcon());
     }
 
     QWidget::changeEvent(event);
