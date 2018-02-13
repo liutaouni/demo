@@ -59,6 +59,7 @@ private:
 
     bool mIsLeftBtnPressed = false;
     QPoint mLeftBtnPressedPos;
+    QPoint mLeftBtnPressedGlobalPos;
     QRect mWinGeometry;
 
     EBorderDragRegion mDragRegion = EBorderNone;

@@ -7,6 +7,7 @@
 
 #include <QPainter>
 #include <QMouseEvent>
+#include <QDesktopWidget>
 
 #include <QDebug>
 
@@ -27,6 +28,7 @@ ComWindow::ComWindow(QWidget *parent) :
     ui->iconBtn->installEventFilter(this);
     ui->btnsWidget->installEventFilter(this);
     ui->contentWidget->installEventFilter(this);
+    ui->titleWidget->installEventFilter(this);
 }
 
 ComWindow::~ComWindow()
@@ -45,6 +47,12 @@ bool ComWindow::eventFilter(QObject *watched, QEvent *event)
             this->setCursor(Qt::ArrowCursor);
             mDragRegion = EBorderNone;
         }
+    }
+    else if(ui->titleWidget == watched && event->type() == QEvent::MouseButtonDblClick)
+    {
+        on_maxBtn_clicked();
+
+        return true;
     }
 
     return QWidget::eventFilter(watched, event);
@@ -129,7 +137,8 @@ void ComWindow::mousePressEvent(QMouseEvent *event)
     if(event->button() == Qt::LeftButton)
     {
         mIsLeftBtnPressed = true;
-        mLeftBtnPressedPos = this->mapToGlobal(event->pos());
+        mLeftBtnPressedPos = event->pos();
+        mLeftBtnPressedGlobalPos = this->mapToGlobal(event->pos());
         mWinGeometry = this->window()->geometry();
     }
 
@@ -142,7 +151,62 @@ void ComWindow::mouseMoveEvent(QMouseEvent *event)
     {
         if(mDragRegion != EBorderNone)
         {
-            updateGeometryByDragBorder(mapToGlobal(event->pos()));
+            QRect rect = qApp->desktop()->availableGeometry(this);
+            QPoint pos = mapToGlobal(event->pos());
+            if(rect.contains(pos))
+            {
+                updateGeometryByDragBorder(mapToGlobal(event->pos()));
+            }
+            else
+            {
+                if(pos.x() < rect.left()){
+                    pos.setX(rect.left());
+                }else if(pos.x() > rect.right()){
+                    pos.setX(rect.right());
+                }
+
+                if(pos.y() < rect.top()){
+                    pos.setY(rect.top());
+                }else if(pos.y() > rect.bottom()){
+                    pos.setY(rect.bottom());
+                }
+
+                QCursor::setPos(pos);
+            }
+        }
+        else if(mLeftBtnPressedPos.y() < ui->titleWidget->height())
+        {
+            QRect rect = qApp->desktop()->availableGeometry(this);
+            QPoint pos = mapToGlobal(event->pos());
+            if(rect.contains(pos))
+            {
+                if(this->window()->windowState() & Qt::WindowMaximized)
+                {
+                    this->window()->showNormal();
+                }
+                else
+                {
+                    this->window()->move(mWinGeometry.topLeft() +
+                                         mapToGlobal(event->pos()) -
+                                         mLeftBtnPressedGlobalPos);
+                }
+            }
+            else
+            {
+                if(pos.x() < rect.left()){
+                    pos.setX(rect.left());
+                }else if(pos.x() > rect.right()){
+                    pos.setX(rect.right());
+                }
+
+                if(pos.y() < rect.top()){
+                    pos.setY(rect.top());
+                }else if(pos.y() > rect.bottom()){
+                    pos.setY(rect.bottom());
+                }
+
+                QCursor::setPos(pos);
+            }
         }
     }
     else
@@ -162,6 +226,13 @@ void ComWindow::mouseReleaseEvent(QMouseEvent *event)
     if(event->button() == Qt::LeftButton)
     {
         mIsLeftBtnPressed = false;
+
+        QPoint pos = this->window()->pos();
+        if(pos.y() < 0)
+        {
+            pos.setY(0);
+            this->window()->move(pos);
+        }
     }
 
     QWidget::mouseReleaseEvent(event);
@@ -234,8 +305,8 @@ void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
 
 void ComWindow::updateGeometryByDragBorder(const QPoint &pos)
 {
-    int xOffset = pos.x() - mLeftBtnPressedPos.x();
-    int yOffset = pos.y() - mLeftBtnPressedPos.y();
+    int xOffset = pos.x() - mLeftBtnPressedGlobalPos.x();
+    int yOffset = pos.y() - mLeftBtnPressedGlobalPos.y();
 
     QRect winRect = mWinGeometry;
 
