@@ -53,6 +53,7 @@ private slots:
 private:
     Ui::ComWindow *ui;
 
+    const int mBorderTopWidth = 1;
     const int mBorderWidth = 7;
     const int mMaxTitleHeight = 23;
     const int mNorTitleHeight = 29;
@@ -60,8 +61,9 @@ private:
     bool mIsLeftBtnPressed = false;
     QPoint mLeftBtnPressedPos;
     QPoint mLeftBtnPressedGlobalPos;
-    QRect mWinGeometry;
-
+    QRect mWinGeometryPressed;
+    QSize mWinSizePre;
+    QSize mWinSizeCur;
     EBorderDragRegion mDragRegion = EBorderNone;
 
     QString mWinTitle;

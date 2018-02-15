@@ -5,11 +5,10 @@
 #include "comwindow.h"
 #include "ui_comwindow.h"
 
+#include <QDebug>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDesktopWidget>
-
-#include <QDebug>
 
 ComWindow::ComWindow(QWidget *parent) :
     QWidget(parent),
@@ -97,7 +96,7 @@ void ComWindow::updateWindowStyle(bool isActive)
     {
         if(isActive)
         {
-            ui->winLayout->setContentsMargins(mBorderWidth, 1, mBorderWidth, mBorderWidth);
+            ui->winLayout->setContentsMargins(mBorderWidth, mBorderTopWidth, mBorderWidth, mBorderWidth);
             ui->titleWidget->setFixedHeight(mNorTitleHeight);
             ui->titleLayout->setContentsMargins(0, 0, 0, 0);
             this->setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
@@ -105,7 +104,7 @@ void ComWindow::updateWindowStyle(bool isActive)
         }
         else
         {
-            ui->winLayout->setContentsMargins(mBorderWidth, 1, mBorderWidth, mBorderWidth);
+            ui->winLayout->setContentsMargins(mBorderWidth, mBorderTopWidth, mBorderWidth, mBorderWidth);
             ui->titleWidget->setFixedHeight(mNorTitleHeight);
             ui->titleLayout->setContentsMargins(0, 0, 0, 0);
             this->setStyleSheet("QWidget#ComWindow{border:1px solid #D3D3D3; background:#EBEBEB;}");
@@ -139,7 +138,7 @@ void ComWindow::mousePressEvent(QMouseEvent *event)
         mIsLeftBtnPressed = true;
         mLeftBtnPressedPos = event->pos();
         mLeftBtnPressedGlobalPos = this->mapToGlobal(event->pos());
-        mWinGeometry = this->window()->geometry();
+        mWinGeometryPressed = this->window()->geometry();
     }
 
     QWidget::mousePressEvent(event);
@@ -178,15 +177,44 @@ void ComWindow::mouseMoveEvent(QMouseEvent *event)
         {
             QRect rect = qApp->desktop()->availableGeometry(this);
             QPoint pos = mapToGlobal(event->pos());
+
             if(rect.contains(pos))
             {
                 if(this->window()->windowState() & Qt::WindowMaximized)
                 {
+                    int halfOfWinPre = (mWinSizePre.width() - (ui->btnsWidget->width() - ui->iconBtn->width()))/2;
+                    int halfOfWinCur = (mWinSizeCur.width() - (ui->btnsWidget->width() - ui->iconBtn->width()))/2;
+
+                    QPoint cursorPosOfWin;
+                    if(mLeftBtnPressedPos.x() < halfOfWinCur)
+                    {
+                        if((mLeftBtnPressedPos.x() + mBorderWidth - 2) < halfOfWinPre){
+                            cursorPosOfWin.setX(mLeftBtnPressedPos.x() + mBorderWidth - 2);
+                        }else{
+                            cursorPosOfWin.setX(halfOfWinPre);
+                        }
+                    }
+                    else
+                    {
+                        if((mWinSizeCur.width() - mLeftBtnPressedPos.x() + mBorderWidth - 2) < halfOfWinPre){
+                            cursorPosOfWin.setX(mWinSizePre.width() - (mWinSizeCur.width() - mLeftBtnPressedPos.x() + mBorderWidth - 2));
+                        }else{
+                            cursorPosOfWin.setX(halfOfWinPre);
+                        }
+                    }
+                    cursorPosOfWin.setY(mLeftBtnPressedPos.y()+(mNorTitleHeight-mMaxTitleHeight-2));
+
+                    QPoint winPos = mLeftBtnPressedGlobalPos - cursorPosOfWin;
+
+                    mWinGeometryPressed.setTopLeft(winPos);
+                    mWinGeometryPressed.setRight(winPos.x() + mWinSizePre.width());
+                    mWinGeometryPressed.setBottom(winPos.y() + mWinSizePre.height());
+
                     this->window()->showNormal();
                 }
                 else
                 {
-                    this->window()->move(mWinGeometry.topLeft() +
+                    this->window()->move(mWinGeometryPressed.topLeft() +
                                          mapToGlobal(event->pos()) -
                                          mLeftBtnPressedGlobalPos);
                 }
@@ -241,6 +269,9 @@ void ComWindow::mouseReleaseEvent(QMouseEvent *event)
 void ComWindow::resizeEvent(QResizeEvent *event)
 {
     updateWindowTitle(mWinTitle);
+
+    mWinSizePre = mWinSizeCur;
+    mWinSizeCur = this->window()->size();
 
     QWidget::resizeEvent(event);
 }
@@ -308,7 +339,7 @@ void ComWindow::updateGeometryByDragBorder(const QPoint &pos)
     int xOffset = pos.x() - mLeftBtnPressedGlobalPos.x();
     int yOffset = pos.y() - mLeftBtnPressedGlobalPos.y();
 
-    QRect winRect = mWinGeometry;
+    QRect winRect = mWinGeometryPressed;
 
     switch(mDragRegion)
     {
