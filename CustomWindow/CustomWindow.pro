@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CustomWindow
 TEMPLATE = app
 
+DEFINES += USE_CUSTOM_WINDOW
 
 SOURCES += main.cpp\
         mainwindow.cpp \

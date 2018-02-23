@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "comwindow.h"
+#include "customwindow.h"
 
 class SWindow : public QWidget
 {
@@ -23,7 +24,15 @@ protected:
     void changeEvent(QEvent *event);
 
 private:
+#ifdef USE_CUSTOM_WINDOW
+    CustomWindow *mComWin = NULL;
+#elif defind(Q_OS_WIN)
     ComWindow *mComWin = NULL;
+#elif defind(Q_OS_MAC)
+
+#else
+
+#endif
 };
 
 #endif // SWINDOW_H

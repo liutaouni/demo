@@ -10,9 +10,17 @@
 SWindow::SWindow(QWidget *parent) : QWidget(parent)
 {
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-    //setAttribute(Qt::WA_TranslucentBackground);
+    setAttribute(Qt::WA_TranslucentBackground);
 
+#ifdef USE_CUSTOM_WINDOW
+    mComWin = new CustomWindow(this);
+#elif defind(Q_OS_WIN)
     mComWin = new ComWindow(this);
+#elif defind(Q_OS_MAC)
+
+#else
+
+#endif
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->setMargin(0);
