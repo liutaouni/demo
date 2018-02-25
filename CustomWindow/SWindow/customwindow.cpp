@@ -9,7 +9,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDesktopWidget>
-#include <QGraphicsDropShadowEffect>
+#include <QtMath>
 
 CustomWindow::CustomWindow(QWidget *parent) :
     QWidget(parent),
@@ -21,11 +21,6 @@ CustomWindow::CustomWindow(QWidget *parent) :
 
     this->setMouseTracking(true);
 
-    QGraphicsDropShadowEffect *shadow_effect = new QGraphicsDropShadowEffect(this);
-    shadow_effect->setOffset(-5, 5);
-    shadow_effect->setColor(Qt::gray);
-    shadow_effect->setBlurRadius(8);
-    ui->contentWidget->setGraphicsEffect(shadow_effect);
     ui->contentWidget->installEventFilter(this);
 }
 
@@ -52,6 +47,23 @@ void CustomWindow::paintEvent(QPaintEvent *e)
     QPainter p(this);
     style()->drawPrimitive( QStyle::PE_Widget, &o, &p, this);
     QWidget::paintEvent(e);
+
+    if(!this->window()->isMaximized() && !this->window()->isFullScreen())
+    {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing,true);
+
+        QColor color(0,0,0,50);
+        for(int i = 0 ; i < mBorderWidth ; ++i)
+        {
+            QPainterPath path;
+            path.setFillRule(Qt::WindingFill);
+            path.addRect(mBorderWidth-i,mBorderWidth-i,this->width()-(mBorderWidth-i)*2,this->height()-(mBorderWidth-i)*2);
+            color.setAlpha(150 - qSqrt(i)*50);
+            painter.setPen(color);
+            painter.drawPath(path);
+        }
+    }
 }
 
 QWidget *CustomWindow::getContentWidget()
@@ -64,13 +76,11 @@ void CustomWindow::updateWindowStyle(bool)
     if(this->window()->windowState() & Qt::WindowMaximized)
     {
         ui->winLayout->setContentsMargins(0, 0, 0, 0);
-        this->setStyleSheet("QWidget#CustomWindow{border:none;}");
         ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:none; background:#FFFFFF;}");
     }
     else
     {
         ui->winLayout->setContentsMargins(mBorderWidth, mBorderWidth, mBorderWidth, mBorderWidth);
-        this->setStyleSheet("QWidget#CustomWindow{border:1px solid #5284BC;}");
         ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
     }
 
