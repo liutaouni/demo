@@ -4,6 +4,7 @@
 #include <QDebug>
 
 #include "exception_handler.h"
+#include "crash_report_sender.h"
 
 // 程序崩溃回调函数;
 bool callback(const wchar_t *dump_path, const wchar_t *id,
