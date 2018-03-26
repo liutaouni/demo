@@ -14,9 +14,9 @@ SWindow::SWindow(QWidget *parent) : QWidget(parent)
 
 #ifdef USE_CUSTOM_WINDOW
     mComWin = new CustomWindow(this);
-#elif defind(Q_OS_WIN)
-    mComWin = new ComWindow(this);
-#elif defind(Q_OS_MAC)
+#elif defined Q_OS_WIN
+    mComWin = new ComWindow_Win(this);
+#elif defined Q_OS_MAC
 
 #else
 

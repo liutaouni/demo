@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "comwindow.h"
+#include "comwindow_win.h"
 #include "customwindow.h"
 
 class SWindow : public QWidget
@@ -26,9 +26,9 @@ protected:
 private:
 #ifdef USE_CUSTOM_WINDOW
     CustomWindow *mComWin = NULL;
-#elif defind(Q_OS_WIN)
-    ComWindow *mComWin = NULL;
-#elif defind(Q_OS_MAC)
+#elif defined Q_OS_WIN
+    ComWindow_Win *mComWin = NULL;
+#elif defined Q_OS_MAC
 
 #else
 

@@ -1,18 +1,18 @@
 HEADERS += \
     $$PWD/swindow.h \
     $$PWD/sdialog.h \
-    $$PWD/comwindow.h \
-    $$PWD/customwindow.h
+    $$PWD/customwindow.h \
+    $$PWD/comwindow_win.h
 
 SOURCES += \
     $$PWD/swindow.cpp \
     $$PWD/sdialog.cpp \
-    $$PWD/comwindow.cpp \
-    $$PWD/customwindow.cpp
+    $$PWD/customwindow.cpp \
+    $$PWD/comwindow_win.cpp
 
 FORMS += \
-    $$PWD/comwindow.ui \
-    $$PWD/customwindow.ui
+    $$PWD/customwindow.ui \
+    $$PWD/comwindow_win.ui
 
 RESOURCES += \
     $$PWD/resource/resource.qrc

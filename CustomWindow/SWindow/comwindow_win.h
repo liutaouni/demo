@@ -1,13 +1,13 @@
-#ifndef COMWINDOW_H
-#define COMWINDOW_H
+#ifndef COMWINDOW_WIN_H
+#define COMWINDOW_WIN_H
 
 #include <QWidget>
 
 namespace Ui {
-class ComWindow;
+class ComWindow_Win;
 }
 
-class ComWindow : public QWidget
+class ComWindow_Win : public QWidget
 {
     Q_OBJECT
 
@@ -26,8 +26,8 @@ private:
     };
 
 public:
-    explicit ComWindow(QWidget *parent = 0);
-    ~ComWindow();
+    explicit ComWindow_Win(QWidget *parent = 0);
+    ~ComWindow_Win();
 
     QWidget *getContentWidget();
 
@@ -51,7 +51,7 @@ private slots:
     void on_closeBtn_clicked();
 
 private:
-    Ui::ComWindow *ui;
+    Ui::ComWindow_Win *ui;
 
     const int mBorderTopWidth = 1;
     const int mBorderWidth = 7;
@@ -72,4 +72,4 @@ private:
     void updateGeometryByDragBorder(const QPoint &pos);
 };
 
-#endif // COMWINDOW_H
+#endif // COMWINDOW_WIN_H

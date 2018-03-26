@@ -2,17 +2,17 @@
     #pragma execution_character_set("utf-8")
 #endif
 
-#include "comwindow.h"
-#include "ui_comwindow.h"
+#include "comwindow_win.h"
+#include "ui_comwindow_win.h"
 
 #include <QDebug>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDesktopWidget>
 
-ComWindow::ComWindow(QWidget *parent) :
+ComWindow_Win::ComWindow_Win(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ComWindow)
+    ui(new Ui::ComWindow_Win)
 {
     ui->setupUi(this);
 
@@ -30,12 +30,12 @@ ComWindow::ComWindow(QWidget *parent) :
     ui->titleWidget->installEventFilter(this);
 }
 
-ComWindow::~ComWindow()
+ComWindow_Win::~ComWindow_Win()
 {
     delete ui;
 }
 
-bool ComWindow::eventFilter(QObject *watched, QEvent *event)
+bool ComWindow_Win::eventFilter(QObject *watched, QEvent *event)
 {
     if((ui->contentWidget == watched && event->type() == QEvent::Enter)
             || (ui->iconBtn == watched && event->type() == QEvent::Enter)
@@ -57,7 +57,7 @@ bool ComWindow::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
-void ComWindow::paintEvent(QPaintEvent *e)
+void ComWindow_Win::paintEvent(QPaintEvent *e)
 {
     QStyleOption o;
     o.initFrom(this);
@@ -66,12 +66,12 @@ void ComWindow::paintEvent(QPaintEvent *e)
     QWidget::paintEvent(e);
 }
 
-QWidget *ComWindow::getContentWidget()
+QWidget *ComWindow_Win::getContentWidget()
 {
     return ui->contentWidget;
 }
 
-void ComWindow::updateWindowStyle(bool isActive)
+void ComWindow_Win::updateWindowStyle(bool isActive)
 {
     if(this->window()->windowState() & Qt::WindowMaximized)
     {
@@ -80,7 +80,7 @@ void ComWindow::updateWindowStyle(bool isActive)
             ui->winLayout->setContentsMargins(0, 0, 0, 0);
             ui->titleWidget->setFixedHeight(mMaxTitleHeight);
             ui->titleLayout->setContentsMargins(2, 0, 2, 0);
-            this->setStyleSheet("QWidget#ComWindow{border:none; background:#6BADF6;}");
+            this->setStyleSheet("QWidget#ComWindow_Win{border:none; background:#6BADF6;}");
             ui->contentWidget->setStyleSheet("QWidget#contentWidget{border-top:1px solid #5B93D1; background:#FFFFFF;}");
         }
         else
@@ -88,7 +88,7 @@ void ComWindow::updateWindowStyle(bool isActive)
             ui->winLayout->setContentsMargins(0, 0, 0, 0);
             ui->titleWidget->setFixedHeight(mMaxTitleHeight);
             ui->titleLayout->setContentsMargins(2, 0, 2, 0);
-            this->setStyleSheet("QWidget#ComWindow{border:none; background:#EBEBEB;}");
+            this->setStyleSheet("QWidget#ComWindow_Win{border:none; background:#EBEBEB;}");
             ui->contentWidget->setStyleSheet("QWidget#contentWidget{border-top:1px solid #DADADA; background:#FFFFFF;}");
         }
     }
@@ -99,7 +99,7 @@ void ComWindow::updateWindowStyle(bool isActive)
             ui->winLayout->setContentsMargins(mBorderWidth, mBorderTopWidth, mBorderWidth, mBorderWidth);
             ui->titleWidget->setFixedHeight(mNorTitleHeight);
             ui->titleLayout->setContentsMargins(0, 0, 0, 0);
-            this->setStyleSheet("QWidget#ComWindow{border:1px solid #5284BC; background:#6BADF6;}");
+            this->setStyleSheet("QWidget#ComWindow_Win{border:1px solid #5284BC; background:#6BADF6;}");
             ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #5B93D1; background:#FFFFFF;}");
         }
         else
@@ -107,7 +107,7 @@ void ComWindow::updateWindowStyle(bool isActive)
             ui->winLayout->setContentsMargins(mBorderWidth, mBorderTopWidth, mBorderWidth, mBorderWidth);
             ui->titleWidget->setFixedHeight(mNorTitleHeight);
             ui->titleLayout->setContentsMargins(0, 0, 0, 0);
-            this->setStyleSheet("QWidget#ComWindow{border:1px solid #D3D3D3; background:#EBEBEB;}");
+            this->setStyleSheet("QWidget#ComWindow_Win{border:1px solid #D3D3D3; background:#EBEBEB;}");
             ui->contentWidget->setStyleSheet("QWidget#contentWidget{border:1px solid #DADADA; background:#FFFFFF;}");
         }
     }
@@ -131,7 +131,7 @@ void ComWindow::updateWindowStyle(bool isActive)
     this->repaint();
 }
 
-void ComWindow::mousePressEvent(QMouseEvent *event)
+void ComWindow_Win::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
@@ -144,7 +144,7 @@ void ComWindow::mousePressEvent(QMouseEvent *event)
     QWidget::mousePressEvent(event);
 }
 
-void ComWindow::mouseMoveEvent(QMouseEvent *event)
+void ComWindow_Win::mouseMoveEvent(QMouseEvent *event)
 {
     if(mIsLeftBtnPressed)
     {
@@ -249,7 +249,7 @@ void ComWindow::mouseMoveEvent(QMouseEvent *event)
     QWidget::mouseMoveEvent(event);
 }
 
-void ComWindow::mouseReleaseEvent(QMouseEvent *event)
+void ComWindow_Win::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton)
     {
@@ -266,7 +266,7 @@ void ComWindow::mouseReleaseEvent(QMouseEvent *event)
     QWidget::mouseReleaseEvent(event);
 }
 
-void ComWindow::resizeEvent(QResizeEvent *event)
+void ComWindow_Win::resizeEvent(QResizeEvent *event)
 {
     updateWindowTitle(mWinTitle);
 
@@ -276,7 +276,7 @@ void ComWindow::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
-void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
+void ComWindow_Win::updateCorsurStyleForDragBorder(const QPoint &pos)
 {
     if(pos.x() < mBorderWidth)
     {
@@ -334,7 +334,7 @@ void ComWindow::updateCorsurStyleForDragBorder(const QPoint &pos)
     }
 }
 
-void ComWindow::updateGeometryByDragBorder(const QPoint &pos)
+void ComWindow_Win::updateGeometryByDragBorder(const QPoint &pos)
 {
     int xOffset = pos.x() - mLeftBtnPressedGlobalPos.x();
     int yOffset = pos.y() - mLeftBtnPressedGlobalPos.y();
@@ -400,12 +400,12 @@ void ComWindow::updateGeometryByDragBorder(const QPoint &pos)
     this->window()->setGeometry(winRect);
 }
 
-void ComWindow::on_minBtn_clicked()
+void ComWindow_Win::on_minBtn_clicked()
 {
     this->window()->showMinimized();
 }
 
-void ComWindow::on_maxBtn_clicked()
+void ComWindow_Win::on_maxBtn_clicked()
 {
     if(this->window()->windowState() & Qt::WindowMaximized){
         this->window()->showNormal();
@@ -414,12 +414,12 @@ void ComWindow::on_maxBtn_clicked()
     }
 }
 
-void ComWindow::on_closeBtn_clicked()
+void ComWindow_Win::on_closeBtn_clicked()
 {
     this->window()->close();
 }
 
-void ComWindow::updateWindowTitle(const QString &title)
+void ComWindow_Win::updateWindowTitle(const QString &title)
 {
     mWinTitle = title;
     QString disTitle = mWinTitle;
@@ -436,7 +436,7 @@ void ComWindow::updateWindowTitle(const QString &title)
     ui->titleLabel->setText(disTitle);
 }
 
-void ComWindow::updateWindowIcon(const QIcon &icon)
+void ComWindow_Win::updateWindowIcon(const QIcon &icon)
 {
     ui->iconBtn->setIcon(icon);
 }
