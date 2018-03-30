@@ -19,8 +19,14 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/breakpad/lib/ -lcommon -lcrash_generation_client -lexception_handler
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/breakpad/lib/ -lcommond -lcrash_generation_clientd -lexception_handlerd
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/breakpad/Windows/lib/ -lcommon -lcrash_generation_client -lexception_handler
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/breakpad/Windows/lib/ -lcommond -lcrash_generation_clientd -lexception_handlerd
+win32:INCLUDEPATH += $$PWD/breakpad/Windows/include
+win32:DEPENDPATH += $$PWD/breakpad/Windows/include
 
-INCLUDEPATH += $$PWD/breakpad/include
-DEPENDPATH += $$PWD/breakpad/include
+mac: LIBS += -F$$PWD/breakpad/Mac/lib/ -framework Breakpad
+mac:INCLUDEPATH += $$PWD/breakpad/Mac/include
+mac:DEPENDPATH += $$PWD/breakpad/Mac/include
+
+
+
