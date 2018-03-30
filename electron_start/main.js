@@ -11,6 +11,11 @@ const url = require('url')
 const Menu = electron.Menu
 const Tray = electron.Tray
 
+const os = require('os')
+
+// 是否正在退出
+var willQuit = false
+
 //托盘对象
 var appTray = null
 
@@ -32,6 +37,12 @@ function createWindow () {
 
 //系统托盘右键菜单
      var trayMenuTemplate = [
+          {
+             label: '显示',
+             click: function () {
+                  mainWindow.show()
+             }
+         },
          {
              label: '设置',
              click: function () {} //打开相应页面
@@ -51,8 +62,6 @@ function createWindow () {
          {
              label: '退出',
              click: function () {
-                 //ipc.send('close-main-window');
-                 	mainWindow.destroy()
                   app.quit();
              }
          }
@@ -60,8 +69,17 @@ function createWindow () {
  
      //系统托盘图标目录
      trayIcon = path.join(__dirname, 'tray')
- 
-     appTray = new Tray(path.join(trayIcon, 'app.ico'))
+      
+     platform = os.platform();
+     if (platform === 'darwin') {
+        appTray = new Tray(path.join(trayIcon, 'app.png'))
+     }else if (platform === 'win32') {
+        appTray = new Tray(path.join(trayIcon, 'app.ico'))
+     }else if (platform === 'linux') {
+        appTray = new Tray(path.join(trayIcon, 'app.bmp'))
+     }else{
+        appTray = new Tray(path.join(trayIcon, 'app.bmp'))
+     }
  
      //图标的上下文菜单
      const contextMenu = Menu.buildFromTemplate(trayMenuTemplate)
@@ -72,36 +90,25 @@ function createWindow () {
      //设置此图标的上下文菜单
      appTray.setContextMenu(contextMenu)
 
-     //系统托盘图标闪烁
-     var count = 0,timer = null;
-     timer=setInterval(function() {
-         count++;
-         if (count%2 == 0) {
-             appTray.setImage(path.join(trayIcon, 'app.ico'))
-         } else {
-             appTray.setImage(path.join(trayIcon, 'appa.ico'))
-         }
-     }, 600)
-
-     //单点击 1.主窗口显示隐藏切换 2.清除闪烁
+     //单点击 主窗口显示隐藏切换
      appTray.on("click", function(){
-         if(!!timer){
-             appTray.setImage(path.join(trayIcon, 'app.ico'))
-             //主窗口显示隐藏切换
-             if(mainWindow.isMinimized()){
-             		mainWindow.show()
-             }else{
-             		mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-             }
+         //主窗口显示隐藏切换
+         if(mainWindow.isMinimized()){
+         		mainWindow.show()
+         }else{
+         		mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
          }
      })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
+  // 准备关闭窗口
   mainWindow.on('close', function (e) {
-  	e.preventDefault()
-		mainWindow.hide()
+    if(!willQuit) {
+      e.preventDefault()
+      mainWindow.hide()
+    }
   })
 
   // Emitted when the window is closed.
@@ -132,7 +139,14 @@ app.on('activate', function () {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow()
+  }else{
+    mainWindow.show()
   }
+})
+
+// 准备退出应用
+app.on('before-quit', function() {
+    willQuit = true
 })
 
 // In this file you can include the rest of your app's specific main process
