@@ -25,80 +25,61 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600, skipTaskbar:false})
+  mainWindow = new BrowserWindow({width: 1000, height: 700})
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
-    pathname: '/ftask/web/app/login.html',
     protocol: 'http',
     host: 'app01.yugusoft.com',
+    pathname: '/ftask/web/app/login.html',
     slashes: true
   }))
 
-//系统托盘右键菜单
-     var trayMenuTemplate = [
-          {
-             label: '显示',
-             click: function () {
-                  mainWindow.show()
-             }
-         },
-         {
-             label: '设置',
-             click: function () {} //打开相应页面
-         },
-          {
-             label: '反馈',
-             click: function () {}
-         },
-         {
-             label: '帮助',
-             click: function () {}
-         },
-         {
-             label: '关于',
-             click: function () {}
-         },
-         {
-             label: '退出',
-             click: function () {
-                  app.quit();
-             }
-         }
-     ];
- 
-     //系统托盘图标目录
-     trayIcon = path.join(__dirname, 'tray')
-      
-     platform = os.platform();
-     if (platform === 'darwin') {
-        appTray = new Tray(path.join(trayIcon, 'app.png'))
-     }else if (platform === 'win32') {
-        appTray = new Tray(path.join(trayIcon, 'app.ico'))
-     }else if (platform === 'linux') {
-        appTray = new Tray(path.join(trayIcon, 'app.bmp'))
-     }else{
-        appTray = new Tray(path.join(trayIcon, 'app.bmp'))
-     }
- 
-     //图标的上下文菜单
-     const contextMenu = Menu.buildFromTemplate(trayMenuTemplate)
- 
-     //设置此托盘图标的悬停提示内容
-     appTray.setToolTip('This is my application.')
- 
-     //设置此图标的上下文菜单
-     appTray.setContextMenu(contextMenu)
+  //系统托盘图标目录
+  trayIcon = path.join(__dirname, 'tray')
 
-     //单点击 主窗口显示隐藏切换
-     appTray.on("click", function(){
-         //主窗口显示隐藏切换
-         if(mainWindow.isMinimized()){
-         		mainWindow.show()
-         }else{
-         		mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-         }
-     })
+  platform = os.platform();
+  if (platform === 'win32') {
+    appTray = new Tray(path.join(trayIcon, 'app.ico'))
+  }else{
+    appTray = new Tray(path.join(trayIcon, 'app.png'))
+  }
+
+  if (platform === 'win32') {
+    //系统托盘右键菜单
+    var trayMenuTemplate = [
+       {
+           label: '显示',
+           click: function () {
+                mainWindow.show()
+           }
+       },
+       {
+           label: '退出',
+           click: function () {
+                app.quit();
+           }
+       }
+    ];
+
+    //图标的上下文菜单
+    const contextMenu = Menu.buildFromTemplate(trayMenuTemplate)
+
+    //设置此图标的上下文菜单
+    appTray.setContextMenu(contextMenu)
+  }
+
+  //设置此托盘图标的悬停提示内容
+  appTray.setToolTip('Fishbone')
+
+  //单点击 主窗口显示隐藏切换
+  appTray.on("click", function(){
+    if (mainWindow === null) {
+      createWindow()
+    }else{
+      mainWindow.show()
+    }
+  })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -123,7 +104,10 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', function () {
+  createWindow()
+  mainWindow.maximize()
+})
 
 // Quit when all windows are closed.
 //app.on('window-all-closed', function () {
