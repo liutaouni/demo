@@ -24,6 +24,30 @@ var appTray = null
 let mainWindow
 
 function createWindow () {
+  platform = os.platform();
+
+  if (platform === 'mas' || platform === 'darwin') {
+    var template = [{
+      label: "Application",
+      submenu: [
+          { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+          { type: "separator" },
+          { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
+      ]}, {
+      label: "Edit",
+      submenu: [
+          { label: "Undo", accelerator: "CommandOrControl+Z", selector: "undo:" },
+          { label: "Redo", accelerator: "Shift+CommandOrControl+Z", selector: "redo:" },
+          { type: "separator" },
+          { label: "Cut", accelerator: "CommandOrControl+X", selector: "cut:" },
+          { label: "Copy", accelerator: "CommandOrControl+C", selector: "copy:" },
+          { label: "Paste", accelerator: "CommandOrControl+V", selector: "paste:" },
+          { label: "Select All", accelerator: "CommandOrControl+A", selector: "selectAll:" }
+      ]}
+    ];
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  }
+
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1000, height: 700})
 
@@ -38,7 +62,6 @@ function createWindow () {
   //系统托盘图标目录
   trayIcon = path.join(__dirname, 'tray')
 
-  platform = os.platform();
   if (platform === 'win32') {
     appTray = new Tray(path.join(trayIcon, 'app.ico'))
   }else{
