@@ -55,7 +55,7 @@ function createWindow () {
   mainWindow.loadURL(url.format({
     protocol: 'http',
     host: 'app01.yugusoft.com',
-    pathname: '/ftask/web/app/login.html',
+    pathname: encodeURIComponent('/ftask/web/index.html#/login?plat=electron'),
     slashes: true
   }))
 
