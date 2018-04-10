@@ -99,6 +99,8 @@ function createWindow () {
   appTray.on("click", function(){
     if (mainWindow === null) {
       createWindow()
+    }else if(mainWindow.isMinimized()){
+    	mainWindow.restore()
     }else{
       mainWindow.show()
     }
@@ -129,7 +131,9 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
   createWindow()
-  mainWindow.maximize()
+  if (platform === 'mas' || platform === 'darwin') {
+  	mainWindow.maximize()
+  }
 })
 
 // Quit when all windows are closed.

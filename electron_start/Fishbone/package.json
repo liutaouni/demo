@@ -4,7 +4,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "packager": "electron-packager ./ --platform=mas --arch=all --out=../Fishbone_out --version=1.8.4 --overwrite --icon=./tray/app.icns --app-bundle-id=com.yugusoft.fishbone.mac --extend-info=./Info.plist --ignore=node_modules --ginore=.gitignore"
+    "packager_mac": "electron-packager ./ --platform=mas --arch=all --out=../Fishbone_out --version=1.8.4 --overwrite --icon=./tray/app.icns --app-bundle-id=com.yugusoft.fishbone.mac --extend-info=./Info.plist --ignore=node_modules --ginore=.gitignore",
+    "packager_win": "electron-packager ./ --platform=win32 --arch=ia32 --out=../Fishbone_out --version=1.8.4 --overwrite --icon=./tray/app.ico --ignore=node_modules --ginore=.gitignore"
   },
   "devDependencies": {
     "electron": "^1.8.4"
