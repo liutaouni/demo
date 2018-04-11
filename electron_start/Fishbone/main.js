@@ -50,14 +50,9 @@ function createWindow () {
 
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1000, height: 700})
-
+	
   // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-    protocol: 'http',
-    host: 'app01.yugusoft.com',
-    pathname: encodeURIComponent('/ftask/web/index.html#/login?plat=electron'),
-    slashes: true
-  }))
+  mainWindow.loadURL('http://app01.yugusoft.com/ftask/web/index.html#/login?plat=electron')
 
   //系统托盘图标目录
   trayIcon = path.join(__dirname, 'tray')
