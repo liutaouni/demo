@@ -57,11 +57,7 @@ function createWindow () {
   //系统托盘图标目录
   trayIcon = path.join(__dirname, 'tray')
 
-  if (platform === 'win32') {
-    appTray = new Tray(path.join(trayIcon, 'app.ico'))
-  }else{
-    appTray = new Tray(path.join(trayIcon, 'app.png'))
-  }
+  appTray = new Tray(path.join(trayIcon, 'app.png'))
 
   if (platform === 'win32') {
     //系统托盘右键菜单
@@ -69,7 +65,13 @@ function createWindow () {
        {
            label: '显示',
            click: function () {
-                mainWindow.show()
+                if (mainWindow === null) {
+                  	createWindow()
+                }else if(mainWindow.isMinimized()){
+                		mainWindow.restore()
+                }else{
+                  	mainWindow.show()
+                }
            }
        },
        {
@@ -145,6 +147,8 @@ app.on('activate', function () {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow()
+  }else if(mainWindow.isMinimized()){
+  	mainWindow.restore()
   }else{
     mainWindow.show()
   }
