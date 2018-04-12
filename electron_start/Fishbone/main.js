@@ -13,6 +13,9 @@ const Tray = electron.Tray
 
 const os = require('os')
 
+//主进程
+const ipc = require('electron').ipcMain;
+
 // 是否正在退出
 var willQuit = false
 
@@ -120,6 +123,18 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null
+  })
+
+  ipc.on('im-unred-num',function(event, num) {
+    if (platform === 'mas' || platform === 'darwin') {
+      if (num < 0) {
+        app.setBadgeCount(0)
+      }else if(num > 99){
+        app.dock.setBadge('99+')
+      }else{
+        app.setBadgeCount(num)
+      }
+    }
   })
 }
 
