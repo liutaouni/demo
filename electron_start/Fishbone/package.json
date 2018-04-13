@@ -1,6 +1,6 @@
 {
   "name": "YUGU",
-  "version": "1.5.9",
+  "version": "1.5.10",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
