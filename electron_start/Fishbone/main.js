@@ -15,12 +15,18 @@ const os = require('os')
 
 //主进程
 const ipc = require('electron').ipcMain;
+//全局快捷键
+const globalShortcut = electron.globalShortcut
 
 // 是否正在退出
 var willQuit = false
 
 //托盘对象
 var appTray = null
+
+var exec = require('child_process').exec;
+
+var isScreenCaptureRunning = false
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -146,6 +152,14 @@ app.on('ready', function () {
   if (platform === 'mas' || platform === 'darwin') {
   	mainWindow.maximize()
   }
+  globalShortcut.register('CommandOrControl+Alt+A', function () {
+  	if(!isScreenCaptureRunning){
+  		isScreenCaptureRunning = true
+	  	exec('.\\ScreenCapture\\ScreenCapture.exe', function(error, stdout, stderr){
+			    isScreenCaptureRunning = false
+			})
+  	}
+  })
 })
 
 // Quit when all windows are closed.
@@ -167,6 +181,10 @@ app.on('activate', function () {
   }else{
     mainWindow.show()
   }
+})
+
+app.on('will-quit', function () {
+  globalShortcut.unregisterAll()
 })
 
 // 准备退出应用
