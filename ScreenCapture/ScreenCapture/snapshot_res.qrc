@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>snapshotimages/arrow.png</file>
+        <file>snapshotimages/brush.png</file>
+        <file>snapshotimages/cancel.png</file>
+        <file>snapshotimages/close.png</file>
+        <file>snapshotimages/ellips.png</file>
+        <file>snapshotimages/large.png</file>
+        <file>snapshotimages/middle.png</file>
+        <file>snapshotimages/ok.png</file>
+        <file>snapshotimages/rect.png</file>
+        <file>snapshotimages/save.png</file>
+        <file>snapshotimages/separator.png</file>
+        <file>snapshotimages/small.png</file>
+        <file>snapshotimages/text.png</file>
+        <file>snapshotimages/cursor.jpg</file>
+        <file>snapshotqss/screenshot.qss</file>
+        <file>snapshotqss/screenshot_mac.qss</file>
+    </qresource>
+</RCC>

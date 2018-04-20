@@ -1,0 +1,443 @@
+QWidget#settingbtmwidget{
+    background: rgb(255,255,255);
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(70,130,180);
+}
+
+QWidget#shotbtnwidget{
+    background: rgb(255,255,255);
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(70,130,180);
+}
+
+QLabel#pixlabel{
+    background: transparent;
+    border-style: solid;
+    border-width:1px;
+    border-color: rgb(0,255,255);
+}
+
+QPushButton#saveButton:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#saveButton:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#cancelBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#cancelBtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#closeButton:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#closeButton:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#okButton:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#okButton:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#rectangleBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#rectangleBtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#ellipseBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#ellipseBtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#paintBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#paintBtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#arrowBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#arrowBtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#texteditbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#texteditbtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#swidthBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color:rgb(173,216,230);
+}
+
+QPushButton#swidthBtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: transparent;
+}
+
+QPushButton#mwidthBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#mwidthBtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#bwidthBtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+    border-radius: 1px;
+    background-color: rgb(173,216,230);
+}
+
+QPushButton#bwidthBtn:!hover{
+    border: none;
+    background-color: transparent;
+}
+
+QPushButton#blackbtn{
+    background-color: rgb(0, 0, 0);
+}
+
+QPushButton#blackbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#blackbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#whitebtn{
+    background-color: rgb(255, 255, 255);
+}
+
+QPushButton#whitebtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#whitebtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#drakgraybtn{
+    background-color: rgb(128, 128, 128);
+}
+
+QPushButton#drakgraybtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#drakgraybtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#graybtn{
+    background-color:  rgb(192, 192, 192);
+}
+
+QPushButton#graybtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#graybtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#drakredbtn{
+    background-color: rgb(128, 0, 0);
+}
+
+QPushButton#drakredbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#drakredbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#redbtn{
+    background-color: rgb(255, 0, 0);
+}
+
+QPushButton#redbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#redbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#drakyellowbtn{
+    background-color: rgb(128, 128, 0);
+}
+
+QPushButton#drakyellowbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#drakyellowbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#yellowbtn{
+    background-color: rgb(255, 255, 0);
+}
+
+QPushButton#yellowbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#yellowbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#drakgreenbtn{
+    background-color: rgb(0, 128, 0);
+}
+
+QPushButton#drakgreenbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#drakgreenbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#greenbtn{
+    background-color: rgb(0, 255, 0);
+}
+
+QPushButton#greenbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#greenbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#drakbluebtn{
+    background-color: rgb(0, 0, 128);
+}
+
+QPushButton#drakbluebtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#drakbluebtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#bluebtn{
+    background-color: rgb(0, 0, 255);
+}
+
+QPushButton#bluebtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#bluebtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#drakpinkbtn{
+    background-color: rgb(128, 0, 128);
+}
+
+QPushButton#drakpinkbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#drakpinkbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#pinkbtn{
+    background-color: rgb(255, 0, 255);
+}
+
+QPushButton#pinkbtn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#pinkbtn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#color1btn{
+    background-color: rgb(0, 128, 128);
+}
+
+QPushButton#color1btn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#color1btn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QPushButton#color2btn{
+    background-color: rgb(0, 255, 255);
+}
+
+QPushButton#color2btn:hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(0,139,139);
+}
+
+QPushButton#color2btn:!hover{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+}
+
+QLabel#selectcolorlabel{
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(110,126,149);
+    background-color: rgb(255, 0, 0)
+}
+
