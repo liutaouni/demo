@@ -153,13 +153,19 @@ app.on('ready', function () {
   	mainWindow.maximize()
   }
   globalShortcut.register('CommandOrControl+Alt+A', function () {
-  	if(!isScreenCaptureRunning){
-  		isScreenCaptureRunning = true
-	  	exec('.\\ScreenCapture\\ScreenCapture.exe', function(error, stdout, stderr){
-			    isScreenCaptureRunning = false
-			})
-  	}
-  })
+    if(!isScreenCaptureRunning){
+      isScreenCaptureRunning = true
+      if (platform === 'win32') {
+        exec('.\\ScreenCapture\\ScreenCapture.exe', function(error, stdout, stderr){
+          isScreenCaptureRunning = false
+        })
+      }else if (platform === 'mas' || platform === 'darwin'){
+        exec(app.getPath('exe').replace(/MacOS.*/,'Frameworks/ScreenCapture.app/Contents/MacOS/ScreenCapture'), function(error, stdout, stderr){
+          isScreenCaptureRunning = false
+        })
+      }
+    }
+	})
 })
 
 // Quit when all windows are closed.

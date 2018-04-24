@@ -13,9 +13,13 @@
   CHILD_PLIST="child.plist"
   PARENT_PLIST="parent.plist"
   LOGINHELPER_PLIST="loginhelper.plist"
-  
+  # 截图程序路径
+  SCRENN_CAPTURE_PATH="Fishbone_out/ScreenCapture.app"
+
   FRAMEWORKS_PATH="$APP_PATH/Contents/Frameworks"
   
+  cp -fR $SCRENN_CAPTURE_PATH $FRAMEWORKS_PATH
+
   codesign -s "$APP_KEY" -f --entitlements "$CHILD_PLIST" "$FRAMEWORKS_PATH/Electron Framework.framework/Versions/A/Electron Framework"
   codesign -s "$APP_KEY" -f --entitlements "$CHILD_PLIST" "$FRAMEWORKS_PATH/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib"
   codesign -s "$APP_KEY" -f --entitlements "$CHILD_PLIST" "$FRAMEWORKS_PATH/Electron Framework.framework/Versions/A/Libraries/libnode.dylib"
