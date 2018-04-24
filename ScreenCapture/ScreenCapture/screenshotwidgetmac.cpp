@@ -1,9 +1,5 @@
-﻿#include "fb_publicclass.h"
 #include "screenshotwidgetmac.h"
 #include "ui_toolwidget.h"
-#include "fb_qdebug.h"
-#include "staticmessagebox.h"
-#include "fb_dir.h"
 
 #include <QApplication>
 #include <QPen>
@@ -162,7 +158,6 @@ void selectRect::slotModified(bool mask)
 
 void selectRect::slot_directChangePos(directionStyle direct, QPoint pt)
 {
-//    QDEBUG() << "slot_directChangePos:" << pt;
     switch (direct) {
     case m_SizeLeft:
         if((m_rect.width()-pt.x()) > 20)
@@ -238,7 +233,6 @@ void selectRect::mousePressEvent(QMouseEvent *ev)
 
     if(ev->button() == Qt::LeftButton)
     {
-//        QDEBUG() << "selectRect mousePressEvent";
         isMoving = true;
         startPoint = ev->globalPos();
         ev->accept();
@@ -365,7 +359,6 @@ void ScreenshotWidget::mousePressEvent(QMouseEvent *ev)
                 isFirstPen = true;
             }
             operateList.insert(0, fullScreenTempPix);
-             QDEBUG() << "after insert,  operateList.count():" << operateList.count();
         }
         return;
     }
@@ -431,8 +424,6 @@ void ScreenshotWidget::mouseMoveEvent(QMouseEvent *ev)
             fullScreenTempPix = tempPix;
             update();
         }
-
-        QDEBUG() << "++++i:" << i;
 
         QPainter painter(&fullScreenTempPix);
         QPen pen;
@@ -572,7 +563,6 @@ void ScreenshotWidget::doWithTextEdit()
         tempPix = fullScreenTempPix;
 
         operateList.insert(0, fullScreenTempPix);
-        QDEBUG() << "after insert,  operateList.count():" << operateList.count();
         i++;
     }
 }
@@ -630,7 +620,6 @@ void ScreenshotWidget::mouseReleaseEvent(QMouseEvent *ev)
     if(isModified && ev->button() == Qt::LeftButton)
     {
         endPoint = ev->pos();
-//        QDEBUG() << "startPoint: " << startPoint << "shotRect.contains(startPoint):" << shotRect.contains(startPoint) << "endPoint: " << endPoint << "shotRect.contains(endPoint):" << shotRect.contains(endPoint);
         if(!shotRect.contains(startPoint) || !shotRect.contains(endPoint))
             return;
 
@@ -645,7 +634,6 @@ void ScreenshotWidget::mouseReleaseEvent(QMouseEvent *ev)
             tempPix = fullScreenTempPix;
 
             operateList.insert(0, fullScreenTempPix);
-            QDEBUG() << "after insert,  operateList.count():" << operateList.count();
             i++;
         }
         return;
@@ -837,7 +825,7 @@ void ScreenshotWidget::readyToPaint(paintContent content)
 }
 
 void ScreenshotWidget::slotRectangleBtnClick()
-{  
+{
     readyToPaint(p_Rect);
     ui->rectangleBtn->setStyleSheet(BTN_CHECK_STYLE);
     ui->ellipseBtn->setStyleSheet(BTN_UNCHECK_STYLE);
@@ -890,7 +878,6 @@ void ScreenshotWidget::updateTextEditState()
 {
     if(this->m_edit != NULL)
     {
-        QDEBUG()<<"setcolor entry";
         QTextCursor cursor = m_edit->textCursor();
         m_edit->selectAll();
         m_edit->setTextColor(this->m_PenColor);
@@ -934,8 +921,6 @@ void ScreenshotWidget::slotBigWidthBtnClick()
 void ScreenshotWidget::slotColorlableClick()
 {
     QPushButton* qpbflag = qobject_cast<QPushButton*>(sender());
-    QDEBUG() <<"@@slotColorlableClick "<< qpbflag->objectName();
-    QDEBUG() <<"@@slotColorlableClick "<< qpbflag->styleSheet();
 
     QString colorstr = "background-color: rgb(255, 0, 0);";
 
@@ -1039,7 +1024,6 @@ void ScreenshotWidget::slotCancelBtnClick() //撤销操作
     {
         resetScreenShot();
     }
-    QDEBUG() << "afer remove, operateList.count(): " << operateList.count();
 }
 
 void ScreenshotWidget::slotSaveBtnClick()
@@ -1067,8 +1051,6 @@ void ScreenshotWidget::slotCloseBtnClick()
 
 void ScreenshotWidget::slotOkbtnClick()
 {
-    StaticMessageBox::informationTimer(NULL, tr("已复制到剪贴板"), 2);
-
     if(m_edit)
         doWithTextEdit();
 

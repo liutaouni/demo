@@ -1,4 +1,4 @@
-﻿#ifndef SCREENSHOTWIDGET_H
+#ifndef SCREENSHOTWIDGET_H
 #define SCREENSHOTWIDGET_H
 
 #include <QWidget>

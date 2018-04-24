@@ -31,24 +31,16 @@
 ScreenshotWidget::ScreenshotWidget(QWidget *parent) :m_autoRectTimer(NULL),
     QLabel(parent)
 {
-    QString qssFile;
-#ifdef Q_OS_MAC
-    qssFile = ":/snapshotqss/screenshot_mac.qss";
-#else
-    qssFile = ":/snapshotqss/screenshot.qss";
-#endif
+    QString qssFile = ":/snapshotqss/screenshot.qss";
     QFile file(qssFile);
     file.open(QFile::ReadOnly);
     QString style = QLatin1String(file.readAll());
     file.close();
 
     this->setStyleSheet(style);
-#ifdef Q_OS_MAC
-    setWindowFlags(Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);  //使窗口置顶|无标题栏,防止黑屏bug显现
-#else
-	setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);  //使窗口置顶
+
+    setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);  //使窗口置顶
     setWindowModality(Qt::ApplicationModal);
-#endif
 
     /*显示阴影的label*/
     m_label = new QLabel(this);
