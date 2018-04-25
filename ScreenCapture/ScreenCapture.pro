@@ -15,3 +15,7 @@ TEMPLATE = app
 SOURCES += main.cpp
 
 include(./ScreenCapture/ScreenCapture.pri)
+
+mac{
+    QMAKE_INFO_PLIST = ./info.plist
+}
