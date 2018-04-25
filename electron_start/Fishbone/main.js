@@ -36,8 +36,6 @@ var PORT = 50263;
 let mainWindow
 
 function createWindow () {
-  platform = os.platform();
-
   if (platform === 'mas' || platform === 'darwin') {
     var template = [{
       label: "Application",
@@ -147,22 +145,27 @@ function createWindow () {
   })
 }
 
-const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
-  // Someone tried to run a second instance, we should focus our window.
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) {
-    	mainWindow.restore()
-    }else{
-    	mainWindow.show()
-    }
-    mainWindow.focus()
-  }
-})
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
+  platform = os.platform()
+
+  const isSecondInstance = false
+  if (platform === 'win32'){
+    const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+      // Someone tried to run a second instance, we should focus our window.
+      if (mainWindow) {
+        if (mainWindow.isMinimized()) {
+          mainWindow.restore()
+        }else{
+          mainWindow.show()
+        }
+        mainWindow.focus()
+      }
+    })
+  }
+
 	if (isSecondInstance) {
 	  app.quit()
 	}else{
