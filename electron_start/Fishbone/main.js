@@ -24,9 +24,12 @@ var willQuit = false
 //托盘对象
 var appTray = null
 
-var exec = require('child_process').exec;
+var execFile = require('child_process').execFile;
+var childProcess = null
 
-var isScreenCaptureRunning = false
+var net = require('net');
+var HOST = '127.0.0.1';
+var PORT = 50263;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -144,28 +147,59 @@ function createWindow () {
   })
 }
 
+const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+  // Someone tried to run a second instance, we should focus our window.
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+    	mainWindow.restore()
+    }else{
+    	mainWindow.show()
+    }
+    mainWindow.focus()
+  }
+})
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
-  createWindow()
-  if (platform === 'mas' || platform === 'darwin') {
-  	mainWindow.maximize()
-  }
-  globalShortcut.register('CommandOrControl+Alt+A', function () {
-    if(!isScreenCaptureRunning){
-      isScreenCaptureRunning = true
-      if (platform === 'win32') {
-        exec('.\\ScreenCapture\\ScreenCapture.exe', function(error, stdout, stderr){
-          isScreenCaptureRunning = false
-        })
-      }else if (platform === 'mas' || platform === 'darwin'){
-        exec(app.getPath('exe').replace(/MacOS.*/,'Frameworks/ScreenCapture.app/Contents/MacOS/ScreenCapture'), function(error, stdout, stderr){
-          isScreenCaptureRunning = false
-        })
-      }
-    }
-	})
+	if (isSecondInstance) {
+	  app.quit()
+	}else{
+		createWindow()
+	  if (platform === 'mas' || platform === 'darwin') {
+	  	mainWindow.maximize()
+	  }
+  
+  	var server = net.createServer()
+  
+  	server.on('listening', function () { // 执行这块代码说明端口未被占用
+	    server.close() // 关闭服务
+	    if (platform === 'win32') {
+		    childProcess = execFile('.\\ScreenCapture\\ScreenCapture.exe')
+		  }else if (platform === 'mas' || platform === 'darwin'){
+		    childProcess = execFile(app.getPath('exe').replace(/MacOS.*/,'Frameworks/ScreenCapture.app/Contents/MacOS/ScreenCapture'))
+		  }
+	  })
+
+	  server.on('error', function (err) {
+	    if (err.code === 'EADDRINUSE') { // 端口已经被使用
+	      
+	    }
+	  })
+	  
+	  server.listen(PORT)
+
+	  globalShortcut.register('CommandOrControl+Alt+A', function () {
+	  	server.listen(PORT)
+	  	
+	  	var client = new net.Socket()
+	    client.connect(PORT, HOST, function() {
+		    client.write('start')
+		    client.destroy()
+			});
+		})
+	}
 })
 
 // Quit when all windows are closed.
@@ -191,6 +225,9 @@ app.on('activate', function () {
 
 app.on('will-quit', function () {
   globalShortcut.unregisterAll()
+  if(childProcess){
+  	childProcess.kill('SIGINT')
+  }
 })
 
 // 准备退出应用
