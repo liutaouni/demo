@@ -175,8 +175,7 @@ app.on('ready', function () {
 	  }
   
   	var server = net.createServer()
-    var client = new net.Socket()
-
+  
   	server.on('listening', function () { // 执行这块代码说明端口未被占用
 	    server.close() // 关闭服务
 	    if (platform === 'win32') {
@@ -184,21 +183,24 @@ app.on('ready', function () {
 		  }else if (platform === 'mas' || platform === 'darwin'){
 		    childProcess = execFile(app.getPath('exe').replace(/MacOS.*/,'Frameworks/ScreenCapture.app/Contents/MacOS/ScreenCapture'))
 		  }
-      setTimeout( function(){
-        client.connect(PORT, HOST)
-      }, 3000)
 	  })
 
 	  server.on('error', function (err) {
 	    if (err.code === 'EADDRINUSE') { // 端口已经被使用
-        client.connect(PORT, HOST)
+	      
 	    }
 	  })
 	  
 	  server.listen(PORT)
 
 	  globalShortcut.register('CommandOrControl+Alt+A', function () {
-      client.write('start')
+	  	server.listen(PORT)
+	  	
+	  	var client = new net.Socket()
+	    client.connect(PORT, HOST, function() {
+		    client.write('start')
+		    client.destroy()
+			});
 		})
 	}
 })
