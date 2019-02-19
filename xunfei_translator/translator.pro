@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia websockets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia websockets network script
 
 TARGET = translator
 TEMPLATE = app
@@ -25,10 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         widget.cpp \
-    translator.cpp
+    translator.cpp \
+    zhtoen.cpp
 
 HEADERS  += widget.h \
-    translator.h
+    translator.h \
+    zhtoen.h
 
 FORMS    += widget.ui
 

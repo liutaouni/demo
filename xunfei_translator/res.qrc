@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>res/bg.jpg</file>
         <file>res/bg.png</file>
+        <file>res/google.js</file>
     </qresource>
 </RCC>

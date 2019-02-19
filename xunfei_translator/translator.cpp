@@ -81,9 +81,6 @@ void Translator::on_disconnected()
 
 void Translator::on_textMessageReceived(const QString &message)
 {
-    if(m_log){
-        m_log->write(message.toLocal8Bit());
-    }
     QJsonDocument jsonDoc = QJsonDocument::fromJson(message.toUtf8());
     QJsonObject jsonObj = jsonDoc.object();
 
@@ -125,6 +122,13 @@ void Translator::on_textMessageReceived(const QString &message)
             emit sigTranslateResult(content, typeStr == "0");
         }
     }
+    else
+    {
+        if(m_log){
+            m_log->write(message.toLocal8Bit());
+        }
+        qDebug() << "==============" << message;
+    }
 }
 
 QString Translator::hmacSha1(QByteArray key, QByteArray baseString)
@@ -152,9 +156,9 @@ QString Translator::hmacSha1(QByteArray key, QByteArray baseString)
 
 QString Translator::getCommonParam()
 {
-    QString appId = "5c622a23";
+    QString appId = "5c6b9bde";
     QString ts = QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch()/1000);
-    QByteArray apiKey = "0d16dea472c46ce725e1dfd3a0c0fadd";
+    QByteArray apiKey = "239da699484c1b49cd097862fcef7bd4";
 
     QString baseString = appId + ts;
     QByteArray md5 = QCryptographicHash::hash(baseString.toUtf8(),QCryptographicHash::Md5).toHex();
