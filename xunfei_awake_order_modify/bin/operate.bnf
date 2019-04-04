@@ -1,0 +1,11 @@
+#BNF+IAT 1.0;
+!grammar operate;
+!slot <operation>;
+!slot <object>;
+!slot <param>;
+
+!start <operatestart>;
+<operatestart>:<operation>[<object>][<param>];
+<operation>:开始!id(10001)|结束!id(10002)|停止!id(10002)|打开!id(10003)|关闭!id(10004)|静音!id(10005)|调整!id(10006);
+<object>:录像!id(201)|麦克风!id(202)|摄像头!id(203);
+<param>:向上!id(301)|向下!id(302)|向左!id(303)|向右!id(304);
