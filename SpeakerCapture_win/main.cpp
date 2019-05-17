@@ -1,11 +1,12 @@
-#include "widget.h"
+﻿#include "speakercapture.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Widget w;
-    w.show();
+
+    MyAudioSink sink;
+    RecordAudioStream(&sink);
 
     return a.exec();
 }

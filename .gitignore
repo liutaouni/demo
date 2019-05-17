@@ -8,3 +8,4 @@ electron_start/Fishbone/node_modules/
 electron_start/Fishbone_out/
 *.bak
 electron_start/Fishbone/package-lock.json
+build-*
